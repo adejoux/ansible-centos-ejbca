@@ -1,0 +1,5 @@
+#!/bin/bash
+
+{{ ejbca_home_dir }}/bin/ejbca.sh ra addendentity --password=temppass --altname  dNSName="{{ ejbca_httpserver_name }}.{{ejbca_httpserver_domain}}" --username "{{ ejbca_httpserver_name }}.{{ejbca_httpserver_domain}}" --caname "{{ ejbca_ca_name }}" --dn "CN={{ ejbca_httpserver_name }}.{{ejbca_httpserver_domain}}, O={{ ejbca_ca_org }}, C={{ ejbca_ca_country }}" --type 1 --token PEM
+{{ ejbca_home_dir }}/bin/ejbca.sh ra setclearpwd {{ ejbca_httpserver_name }}.{{ejbca_httpserver_domain}} temppass
+{{ ejbca_home_dir }}/bin/ejbca.sh batch

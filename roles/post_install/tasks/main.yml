@@ -1,0 +1,55 @@
+- name: Wildfly Add TLS and HTTPS configuration
+  command: "{{ ejbca_jboss_home }}/bin/jboss-cli.sh -c --file={{ ejbca_home_dir }}/cli/add_interfaces.cli"
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/add_interfaces.done"
+
+- name: Mark Wildfly TLS and HTTPS default configuration added
+  file: path="{{ ejbca_home_dir }}/cli/add_interfaces.done" state=touch
+
+- name: Wildfly configure identities and socket bindings
+  command: "{{ ejbca_jboss_home }}/bin/jboss-cli.sh -c --file={{ ejbca_home_dir }}/cli/identities.cli"
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/identities.done"
+
+- name: Mark Wildfly configure identities and socket bindings
+  file: path="{{ ejbca_home_dir }}/cli/identities.done" state=touch
+
+- name: Restart Wildfly
+  service: name="ejbca" state=restarted
+
+- wait_for:
+    port: 9990
+    delay: 1
+
+- pause:
+    seconds: 60
+
+- name: Wildfly listening configuration
+  command: "{{ ejbca_jboss_home }}/bin/jboss-cli.sh -c --file={{ ejbca_home_dir }}/cli/listen.cli"
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/listen.done"
+
+- name: Mark Wildfly listening configuration done
+  file: path="{{ ejbca_home_dir }}/cli/listen.done" state=touch
+
+- pause:
+    seconds: 60
+
+- name: Wildfly final configuration
+  command: "{{ ejbca_jboss_home }}/bin/jboss-cli.sh -c --file={{ ejbca_home_dir }}/cli/final.cli"
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/final.done"
+
+- name: Mark Wildfly final configuration done
+  file: path="{{ ejbca_home_dir }}/cli/final.done" state=touch
+
+- pause:
+    seconds: 60
+    
+- name: Wildfly mail configuration
+  command: "{{ ejbca_jboss_home }}/bin/jboss-cli.sh -c --file={{ ejbca_home_dir }}/cli/mail.cli"
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/mail.done"
+
+- name: Mark Wildfly mail configuration done
+  file: path="{{ ejbca_home_dir }}/cli/mail.done" state=touch

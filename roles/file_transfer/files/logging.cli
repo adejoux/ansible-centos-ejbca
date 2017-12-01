@@ -1,0 +1,4 @@
+/subsystem=logging/logger=org.ejbca:add
+/subsystem=logging/logger=org.ejbca:write-attribute(name=level, value=DEBUG)
+/subsystem=logging/logger=org.cesecore:add
+/subsystem=logging/logger=org.cesecore:write-attribute(name=level, value=DEBUG)

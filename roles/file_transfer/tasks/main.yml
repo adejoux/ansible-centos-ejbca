@@ -1,0 +1,28 @@
+- name: Deploy EJBCA properties files
+  template: src="{{ item }}.j2" dest="{{ ejbca_home_dir }}/conf/{{ item }}" owner="{{ ca_user }}" group="{{ ca_user }}"
+  with_items:
+    - install.properties
+    - ejbca.properties
+    - database.properties
+    - web.properties
+    - cesecore.properties
+
+- name: Create cli scripts directory
+  file: path="{{ ejbca_home_dir }}/cli" state=directory owner="{{ ca_user }}" group="{{ ca_user }}"
+
+- name: Deploy wildfly templated cli scripts
+  template: src="{{ item }}.j2" dest="{{ ejbca_home_dir }}/cli/{{ item }}" owner="{{ ca_user }}" group="{{ ca_user }}"
+  with_items:
+    - "add_interfaces.cli"
+    - "datasource.cli"
+    - "identities.cli"
+    - "mail.cli"
+
+- name: Deploy wildfly_cli scripts
+  copy: src="{{ item }}" dest="{{ ejbca_home_dir }}/cli/{{ item }}" owner="{{ ca_user }}" group="{{ ca_user }}"
+  with_items:
+    - "wildfly_remoting.cli"
+    - "logging.cli"
+    - "remove_tls_http.cli"
+    - "listen.cli"
+    - "final.cli"

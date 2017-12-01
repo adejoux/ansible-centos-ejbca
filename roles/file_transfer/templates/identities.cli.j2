@@ -1,0 +1,6 @@
+/core-service=management/security-realm=SSLRealm:add()
+/core-service=management/security-realm=SSLRealm/server-identity=ssl:add(keystore-path="${jboss.server.config.dir}/keystore/keystore.jks", keystore-password="{{ ejbca_httpserver_password }}", alias="{{ ejbca_httpserver_name }}")
+/core-service=management/security-realm=SSLRealm/authentication=truststore:add(keystore-path="${jboss.server.config.dir}/keystore/truststore.jks", keystore-password="{{ ejbca_java_trustpassword }}")
+/socket-binding-group=standard-sockets/socket-binding=httpspriv:add(port="{{ ejbca_httpserver_privhttps }}",interface="httpspriv")
+/socket-binding-group=standard-sockets/socket-binding=httpspub:add(port="{{ ejbca_httpserver_pubhttps }}", interface="httpspub")
+

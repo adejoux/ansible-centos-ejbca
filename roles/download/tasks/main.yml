@@ -1,0 +1,27 @@
+
+- stat: path="{{ ejbca_download_dir }}/{{ ejbca_wildfly_package }}.zip"
+  register: wildfly_file
+
+- name: Download Wildfly archive.
+  get_url:
+    url: "{{ ejbca_download_url }}/{{ ejbca_wildfly_package }}.zip"
+    dest: "{{ ejbca_download_dir }}"
+  when: wildfly_file.stat.exists == False
+
+- stat: path="{{ ejbca_download_dir }}/ejbca_ce_{{ ejbca_version  }}.zip"
+  register: ejbca_file
+
+- name: Download EJBCA archive.
+  get_url:
+    url: "{{ ejbca_download_url }}/ejbca_ce_{{ ejbca_version  }}.zip"
+    dest: "{{ ejbca_download_dir }}"
+  when: ejbca_file.stat.exists == False
+
+- stat: path="{{ ejbca_download_dir }}/mariadb-java-client-{{mariadb_java_client_version }}.jar"
+  register: mariadb_file
+
+- name: Download MariaDB Java Connector.
+  get_url:
+    url: "{{ ejbca_download_url }}/mariadb-java-client-{{mariadb_java_client_version }}.jar"
+    dest: "{{ ejbca_download_dir }}"
+  when: mariadb_file.stat.exists == False

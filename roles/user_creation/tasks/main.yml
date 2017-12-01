@@ -1,0 +1,5 @@
+- name: Add {{ ca_user }} group
+  group: name="{{ ca_user }}" gid="{{ user_gid }}" state=present
+
+- name: Add {{ ca_user }} user
+  user: name="{{ ca_user }}" group="{{ ca_user }}" uid="{{ user_uid }}" comment="EJBCA application user" state=present

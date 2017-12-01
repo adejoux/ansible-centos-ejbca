@@ -1,0 +1,44 @@
+- name: Define datasource
+  command: "{{ ejbca_jboss_home }}/bin/jboss-cli.sh -c --file={{ ejbca_home_dir }}/cli/datasource.cli"
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/datasource.done"
+
+- name: Mark datasource created
+  file: path="{{ ejbca_home_dir }}/cli/datasource.done" state=touch
+
+- pause:
+    seconds: 30
+
+- name: Enable JBOSS remoting
+  command: "{{ ejbca_jboss_home }}/bin/jboss-cli.sh -c --file={{ ejbca_home_dir }}/cli/wildfly_remoting.cli"
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/wildfly_remoting.done"
+
+- pause:
+    seconds: 60
+
+- name: Mark JBOSS remoting configured
+  file: path="{{ ejbca_home_dir }}/cli/wildfly_remoting.done" state=touch
+
+- name: Enable JBOSS logging
+  command: "{{ ejbca_jboss_home }}/bin/jboss-cli.sh -c --file={{ ejbca_home_dir }}/cli/logging.cli"
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/logging.done"
+
+- name: Mark JBOSS logging configured
+  file: path="{{ ejbca_home_dir }}/cli/logging.done" state=touch
+
+- name: Disable TLS and HTTPS default configuration
+  command: "{{ ejbca_jboss_home }}/bin/jboss-cli.sh -c --file={{ ejbca_home_dir }}/cli/remove_tls_http.cli"
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/remove_tls_http.done"
+
+- name: Mark JBOSS TLS and HTTPS default configuration removed
+  file: path="{{ ejbca_home_dir }}/cli/remove_tls_http.done" state=touch
+
+- name: Restart EJBCA
+  service: name="ejbca" state=restarted
+
+- wait_for:
+    port: 9990
+    delay: 1

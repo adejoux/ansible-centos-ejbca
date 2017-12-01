@@ -1,0 +1,5 @@
+[all:children]
+ca_server
+
+[ca_server]
+centos3

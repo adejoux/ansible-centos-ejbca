@@ -1,0 +1,8 @@
+- name: Start MariaDB
+  service: name="mariadb" state=started enabled=yes
+
+- name: create EJBCA database
+  mysql_db: name="{{ ejbca_database }}" state=present
+
+- name: create EJBCA user in MariaDB
+  mysql_user: name="{{ ejbca_mariadb_user }}" password="{{ ejbca_mariadb_password }}" priv="*.*:ALL,GRANT" state=present

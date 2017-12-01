@@ -1,0 +1,3 @@
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=ejbca-mail-smtp:add(port="{{ ejbca_mail_port }}", host="{{ ejbca_mail_server }}")
+/subsystem=mail/mail-session="java:/EjbcaMail":add(jndi-name=java:/EjbcaMail, from={{ejbca_mail_address }})
+/subsystem=mail/mail-session="java:/EjbcaMail"/server=smtp:add(outbound-socket-binding-ref=ejbca-mail-smtp, tls=false)

@@ -1,0 +1,41 @@
+- name: Deploy EJBCA EAR
+  command: ant clean deployear
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/ear_deployed.done"
+    chdir: "{{ ejbca_home_dir }}"
+  become: true 
+  become_user: "{{ ca_user }}"
+
+- name: Mark EJBCA EAR deployed
+  file: path="{{ ejbca_home_dir }}/cli/ear_deployed.done" state=touch
+  become: true
+  become_user: "{{ ca_user }}"
+
+- pause:
+    seconds: 30
+
+- name: Run EJBCA installation
+  command: ant runinstall
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/runinstall.done"
+    chdir: "{{ ejbca_home_dir }}"
+  become: true
+  become_user: "{{ ca_user }}"
+
+- name: Mark EJBCA EAR deployed
+  file: path="{{ ejbca_home_dir }}/cli/runinstall.done" state=touch
+  become: true
+  become_user: "{{ ca_user }}"
+
+- name: Deploy EJBCA keystore
+  command: ant deploy-keystore
+  args:
+    creates: "{{ ejbca_home_dir }}/cli/deploy_keystore.done"
+    chdir: "{{ ejbca_home_dir }}"
+  become: true
+  become_user: "{{ ca_user }}"
+
+- name: Mark EJBCA keystore deployed
+  file: path="{{ ejbca_home_dir }}/cli/deploy_keystore.done" state=touch
+  become: true
+  become_user: "{{ ca_user }}"

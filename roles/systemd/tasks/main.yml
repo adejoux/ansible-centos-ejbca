@@ -1,0 +1,16 @@
+- name: Ensure EJBCA unit file is present.
+  template:
+    src: ejbca.service.j2
+    dest: /etc/systemd/system/ejbca.service
+
+- name: Reload systemd.
+  systemd:
+    name: ejbca
+    daemon_reload: True
+
+- name: Start EJBCA
+  service: name="ejbca" state=started
+
+- wait_for:
+    port: 9990
+    delay: 1

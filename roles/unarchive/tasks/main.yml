@@ -1,0 +1,38 @@
+- name: Unarchive EJBCA archive.
+  unarchive:
+    src: "{{ ejbca_download_dir }}/ejbca_ce_{{ ejbca_version }}.zip"
+    dest: "{{ ejbca_base_dir }}/"
+    owner: "{{ ca_user }}"
+    group: "{{ ca_user }}"
+    remote_src: "yes"
+    creates: "{{ ejbca_base_dir }}/ejbca_ce_{{ ejbca_version }}"
+- name: Create symlink for {{ ejbca_home_dir }}
+  file:
+    src: "{{ ejbca_base_dir }}/ejbca_ce_{{ ejbca_version }}"
+    dest: "{{ ejbca_home_dir }}"
+    state: link
+    owner: "{{ ca_user }}"
+    group: "{{ ca_user }}"
+
+- name: Unarchive JBOSS archive.
+  unarchive:
+    src: "{{ ejbca_download_dir }}/{{ ejbca_wildfly_package }}.zip"
+    dest: "{{ ejbca_base_dir }}/"
+    owner: "{{ ca_user }}"
+    group: "{{ ca_user }}"
+    remote_src: "yes"
+    creates: "{{ ejbca_base_dir }}/{{ ejbca_wildfly_package }}"
+
+- name: Create symlink for {{ ejbca_base_dir }}/wildfly
+  file:
+    src: "{{ ejbca_base_dir }}/{{ ejbca_wildfly_package }}"
+    dest: "{{ ejbca_jboss_home }}"
+    state: link
+    owner: "{{ ca_user }}"
+    group: "{{ ca_user }}"
+
+- name: Copy MariaDB JDBC driver
+  copy:
+    src: "{{ ejbca_download_dir }}/mariadb-java-client-{{mariadb_java_client_version }}.jar"
+    dest: "{{ ejbca_jboss_home }}/standalone/deployments/mariadb-java-client.jar"
+    remote_src: yes

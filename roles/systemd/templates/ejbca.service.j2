@@ -1,0 +1,13 @@
+[Unit]
+Description=EJBCA application
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart={{ ejbca_jboss_home }}/bin/standalone.sh
+ExecStop={{ ejbca_jboss_home }}/bin/jboss-cli.sh --connect --command=:shutdown
+User={{ ca_user }}
+Group={{ ca_user }}
+
+[Install]
+WantedBy=multi-user.target

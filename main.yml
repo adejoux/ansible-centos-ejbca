@@ -1,0 +1,24 @@
+- hosts: ca_server
+  become: true
+  become_user: root
+  remote_user: adejoux
+  roles:
+    - { role: 'user_creation', tags: 'user_creation' }
+    - { role: 'packages', tags: 'packages' }
+    - { role: 'db', tags: 'db' }
+    - { role: 'filesystem', tags: 'filesystem' }
+    - { role: 'download', tags: 'download' }
+    - { role: 'unarchive', tags: 'unarchive' }
+    - { role: 'systemd', tags: 'systemd' }
+    - { role: 'file_transfer', tags: 'file_transfer' }
+    - { role: 'pre_install', tags: 'pre_install' }
+    - { role: 'install', tags: 'install' }
+    - { role: 'post_install', tags: 'post_install' }
+    - { role: 'httpd', tags: 'httpd' }
+
+    
+
+
+
+
+

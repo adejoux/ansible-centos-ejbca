@@ -1,0 +1,15 @@
+- name: Create "{{ ejbca_base_dir }}"
+  file:
+    path: "{{ ejbca_base_dir }}"
+    state: directory
+    owner: "{{ ca_user }}"
+    group: "{{ ca_user }}"
+    mode: 0755
+
+- name: Create "{{ ejbca_download_dir }}"
+  file:
+    path: "{{ ejbca_download_dir }}"
+    state: directory
+    owner: "{{ ca_user }}"
+    group: "{{ ca_user }}"
+    mode: 0755

@@ -1,0 +1,33 @@
+- name: Deploy create cert script
+  template: src="{{ item }}.j2" dest="{{ ejbca_home_dir }}/cli/{{ item }}" owner="{{ ca_user }}" group="{{ ca_user }}" mode=0400
+  with_items:
+    - "createcerts.sh"
+
+- name: Create httpd certs
+  command: bash {{ ejbca_home_dir }}/cli/createcerts.sh
+  args:
+    creates: "{{ ejbca_home_dir }}/p12/pem/{{ ejbca_httpserver_name }}.{{ejbca_httpserver_domain}}.pem"
+  become: true
+  become_user: "{{ ca_user }}"
+
+
+- name: Create httpd ssl directory
+  file:
+    path: "/etc/httpd/conf/ssl"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: 0755
+
+- name: copy httpd certs
+  copy: src="{{ ejbca_home_dir }}/p12/pem/{{ item }}" remote_src=yes dest="/etc/httpd/conf/ssl" owner=root group=root
+  with_items:
+    - "{{ ejbca_httpserver_name }}.{{ejbca_httpserver_domain}}.pem"
+    - "{{ ejbca_httpserver_name }}.{{ejbca_httpserver_domain}}-Key.pem"
+    - "{{ ejbca_httpserver_name }}.{{ejbca_httpserver_domain}}-CA.pem"
+    
+- name: Deploy EJBCA httpd configuration
+  template: src="ejbca.conf.j2" dest="/etc/httpd/conf.d/ejbca.conf"
+
+- name: Start httpd
+  service: name="httpd" state=started  

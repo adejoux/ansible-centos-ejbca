@@ -1,0 +1,45 @@
+# user parameters
+ca_user: "caadm"
+user_gid: 9000
+user_uid: 9000
+
+# database parameters
+ejbca_database: "ejbca"
+ejbca_mariadb_user: "ejbca"
+ejbca_mariadb_password: "mypassword"
+
+#download parameters
+ejbca_download_dir: "/apps/download"
+ejbca_download_url: "http://downloadserver/packages"
+ejbca_wildfly_package: "wildfly-10.1.0.Final"
+ejbca_version: "6_5.0.5"
+mariadb_java_client_version: "1.5.8"
+
+#filesystem parameters
+ejbca_base_dir: "/apps"
+ejbca_jboss_home: "/apps/wildfly"
+ejbca_home_dir: "/apps/ejbca"
+
+#CA parameters
+ejbca_ca_name: "test CA"
+ejbca_ca_org: "test environment"
+ejbca_ca_country: "FR"
+
+# http parameters
+ejbca_httpserver_name: "centos3"
+ejbca_httpserver_domain: "mydomain.com"
+ejbca_httpserver_pubhttp: "8080"
+ejbca_httpserver_pubhttps: "8442"
+ejbca_httpserver_privhttps: "8443"
+
+# mail parameters
+ejbca_mail_address: "ejbca-noreply@mydomain.com"
+ejbca_mail_server: "localhost"
+ejbca_mail_port: "25"
+
+# secret passwords(should be in a vault file)
+ejbca_cli_password: "Secret123"
+ejbca_java_trustpassword: "Secret123"
+ejbca_superadmin_password: "Secret123"
+ejbca_httpserver_password: "Secret123"
+
